@@ -10,7 +10,7 @@ class Game {
   Game() {
     this.minCoord = -1000;
     this.maxCoord = 1000;
-    this.p = new Player(0, 0, 20, new WeaponDev(), 100, 40);
+    this.p = new Player(0, 0, 20, new WeaponFlamethrower(), 100, 40);
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;

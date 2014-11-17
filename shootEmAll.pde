@@ -1,11 +1,13 @@
 
 Game g;
 Screen s;
+ResourceManager rm;
 PFont f;
 boolean input;
 
 void setup() {
   size(displayWidth, displayHeight, P2D);
+  this.rm = new ResourceManager();
   this.g = new Game();
   this.s = new Screen(this.g);
   colorMode(HSB, 100, 1, 1, 1);
