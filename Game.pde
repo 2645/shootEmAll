@@ -14,13 +14,12 @@ class Game {
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;
-    this.level = 0;
-    
+    this.level = 0;    
     this.map = loadImage("MAP.png");
     map.loadPixels();
   }
   boolean first = true;
-  
+
   void update() {
     if (lvlCompleted()) {
       if (first) {
@@ -71,6 +70,7 @@ class Game {
       line(i, minCoord, i, maxCoord);
       line(minCoord, i, maxCoord, i);
     }
+    image(map,0,0);
   }
 
   boolean lvlCompleted() {
@@ -87,8 +87,8 @@ class Game {
     for (int i = 0; i < 1; i++) {
       Enemy e = new EnemyRegular(minCoord, maxCoord);
       entities.add(new EnemyRegular(minCoord, maxCoord));
-      if(i<amount/5){
-      //entities.add(new EnemySniper(minCoord, maxCoord));
+      if (i<amount/5) {
+        //entities.add(new EnemySniper(minCoord, maxCoord));
       }
     }         
     time = millis();
@@ -136,10 +136,6 @@ class Game {
         entitiesCopy.get(i).resolveCollision(entitiesCopy.get(j));
       }
     }
-  }
-  
-  void generateWall(){
-    entities.add(new EntityWall(200,200));
   }
 }
 
