@@ -11,7 +11,7 @@ class Bullet extends Entity {
 
   void show() {
     pushMatrix();
-    translate(x+e.size/2*cos(e.dir), y+e.size/2*sin(e.dir));
+    translate(x, y);
     rotate(dir);
     fill(63, 1, 1);
     rect(0, 0, size, size);
@@ -24,7 +24,7 @@ class Bullet extends Entity {
     }
   }
   
-  void walCol(){    
+  void wallCol(){    
     g.entities.remove(g.entities.indexOf(this));          
   }
 }
