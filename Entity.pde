@@ -39,25 +39,54 @@ class Entity {
   void updatePos() {
     float x = this.xS*(millis()-this.time)/100;    
     float y = this.yS*(millis()-this.time)/100;
-    int maxX = ceil(x);
-    int maxY = ceil(y);
+    int maxX = round(x);
+    int maxY = round(y);
     if(maxY == 0 && maxX == 0){
      this.time = millis();
      return; 
     }
-    float absX = round(this.x + 1000);
-    float absY = round(this.y + 1000);
-    float newX = max(min(absX + maxX, 2000), 0);
-    float newY = max(min(absY + maxY, 2000), 0);
-    
-    if(g.map.pixels[floor(newY*2000 + newX)] != 16777215){
-      this.time = millis();
-      return;
+    int absX = round(this.x + 1000);
+    int absY = round(this.y + 1000);
+    //float newX = max(min(absX + maxX, 2000), 0);
+    //float newY = max(min(absY + maxY, 2000), 0);
+    int yD = maxY < 0 ? -1 : 1;
+    int xD = maxX < 0 ? -1 : 1;
+    int absMaxX = abs(maxX);
+    int absMaxY = abs(maxY);
+    println(x + ":" + y);
+    if(absMaxY > absMaxX){
+       float diff = absMaxX / absMaxY;
+       for(int i = 0; i < absMaxY; i++){
+         int newX = max(min(absX + round((i*xD) * diff), 2000),0);
+         int newY = max(min(absY + (i*yD), 2000),0);
+         if(g.map.pixels[newY*2000 + newX] == 16777215){
+           x = (i*xD) * diff;
+           y = i*yD;
+         }else{
+           break; 
+         }
+       }
+    }else{
+      float diff = absMaxY / absMaxX;
+      for(int i = 0; i < absMaxX; i++){
+         int newX = max(min(absX + (i*xD), 2000),0);
+         int newY = max(min(absY + round((i*yD) * diff), 2000),0);
+         if(g.map.pixels[newY*2000 + newX] == 16777215){
+           x = i*xD;
+           y = (i*yD) * diff;
+         }else{
+           break; 
+         }
+      }
     }
+    
+    //if(g.map.pixels[floor(newY*2000 + newX)] != 16777215){
+    //  this.time = millis();
+    //  return;
+    //}
     
     x = this.x + x;
     y = this.y + y;
-    
     if (validPos(x)) {
       this.x = x;
     } 
