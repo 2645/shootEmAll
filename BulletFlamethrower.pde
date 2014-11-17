@@ -16,7 +16,7 @@ class BulletFlamethrower extends Bullet {
   }
   void show() {
     pushMatrix();
-    translate(x, y);
+    translate(x+e.size/2*cos(e.dir), y+e.size/2*sin(dir));
     rotate(dir);
     if(random(0,1) < 0.9){
     image(im,0,0,size,size);

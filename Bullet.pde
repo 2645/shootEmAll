@@ -11,7 +11,7 @@ class Bullet extends Entity {
 
   void show() {
     pushMatrix();
-    translate(x, y);
+    translate(x+e.size/2*cos(e.dir), y+e.size/2*sin(e.dir));
     rotate(dir);
     fill(63, 1, 1);
     rect(0, 0, size, size);
