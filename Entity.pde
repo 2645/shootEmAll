@@ -37,9 +37,24 @@ class Entity {
   }
 
   void updatePos() {
-    this.x += this.xS*(millis()-this.time)/100;
-    this.y += this.yS*(millis()-this.time)/100;
+    println(g.map.pixels[floor((this.y+1000)*2000+this.x+1000)]);
+    float x = this.x + this.xS*(millis()-this.time)/100;    
+    float y = this.y + this.yS*(millis()-this.time)/100;
+    println(this.x+ ":" + this.y);
+    println(x+":"+y);
+    if (validPos(x) && g.map.pixels[floor(x+1000)+floor(this.y+1000)*2000] == 16777215) {
+      this.x = x;
+    } else if (this instanceof Bullet){
+      ((Bullet) this).walCol();
+    }
+
+    if (validPos(y) &&g.map.pixels[floor(this.x+1000)+floor(y+1000)*2000] == 16777215) {   
+      this.y = y;
+    }else if (this instanceof Bullet){
+      ((Bullet) this).walCol();
+    }
     this.time = millis();
+    
   }
 
   void update() {
@@ -62,17 +77,26 @@ class Entity {
       ((Drop) this).entityCol((Player) e);
     } else if (this instanceof Player && e instanceof Drop) {
       ((Drop) e).entityCol((Player) this);
-    } 
+    } else if (this instanceof EntityWall && e instanceof EntityLiving) {
+      ((EntityWall) this).entityCol((EntityLiving) e);
+    } else if (this instanceof EntityLiving && e instanceof EntityWall) {
+      ((EntityWall) e). entityCol((EntityLiving) this);
+    } else if (this instanceof EntityWall && e instanceof Bullet) {
+      ((EntityWall) this).entityCol((Bullet) e);
+    } else if (this instanceof Bullet && e instanceof EntityWall) {
+      ((EntityWall) e).entityCol((Bullet) this);
+    }
     // COLLISIONS THAT ARE IGNORED
     else if (this instanceof Drop && e instanceof Drop) {
     } else if (this instanceof Drop && e instanceof Entity) {
     } else if (this instanceof Entity && e instanceof Drop) {
     } else if (this instanceof Bullet && e instanceof Bullet) {
+    } else if (this instanceof EntityWall && e instanceof EntityWall) {
     } else {
       this.entityCol(e);
     }
   }
-  
+
   void entityCol(Entity e) {
     println("collision between " + this.getClass() + " and " +e.getClass() + " is not implemented you noob");
   }
@@ -104,6 +128,13 @@ class Entity {
   }
 
   void fire() {
+  }
+  
+  boolean validPos(float x){
+  if(x<= g.maxCoord && x >= g.minCoord){
+    return true;
+  }
+  return false;
   }
 }
 

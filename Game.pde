@@ -5,15 +5,19 @@ class Game {
   Player p;
   ArrayList<Entity> entities;
   float time, level, breakTime;
+  PImage map;
 
   Game() {
     this.minCoord = -1000;
     this.maxCoord = 1000;
-    this.p = new Player(0, 0, 20, new WeaponFlamethrower(), 100, 40);
+    this.p = new Player(0, 0, 20, new WeaponDev(), 100, 40);
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;
     this.level = 0;
+    
+    this.map = loadImage("MAP.png");
+    map.loadPixels();
   }
   boolean first = true;
   
@@ -80,11 +84,11 @@ class Game {
 
   void spawnEnemies() {
     int amount = round(random(10+level*3, 20+level*5));
-    for (int i = 0; i < amount; i++) {
+    for (int i = 0; i < 1; i++) {
       Enemy e = new EnemyRegular(minCoord, maxCoord);
       entities.add(new EnemyRegular(minCoord, maxCoord));
       if(i<amount/5){
-      entities.add(new EnemySniper(minCoord, maxCoord));
+      //entities.add(new EnemySniper(minCoord, maxCoord));
       }
     }         
     time = millis();
@@ -132,6 +136,10 @@ class Game {
         entitiesCopy.get(i).resolveCollision(entitiesCopy.get(j));
       }
     }
+  }
+  
+  void generateWall(){
+    entities.add(new EntityWall(200,200));
   }
 }
 

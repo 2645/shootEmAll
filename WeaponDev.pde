@@ -5,10 +5,10 @@ class WeaponDev extends Weapon {
     this.bullet = new BulletDev(0,0,0,new Entity());
   }
 
-  void fire(EntityLiving e) {
+  void fire() {
     if (this.owner instanceof Player) {
       this.ammo -=1;
     }
-    g.entities.add(new BulletDev(e.x, e.y, e.dir, e));
+    g.entities.add(new BulletDev(this.owner.x, this.owner.y, this.owner.dir, this.owner));
   }
 }

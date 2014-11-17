@@ -23,5 +23,9 @@ class Bullet extends Entity {
       g.entities.remove(g.entities.indexOf(this));
     }
   }
+  
+  void walCol(){    
+    g.entities.remove(g.entities.indexOf(this));          
+  }
 }
 
