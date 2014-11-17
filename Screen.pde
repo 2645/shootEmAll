@@ -45,11 +45,11 @@ class Screen {
     if ((millis()-startingTime)/1000/60 < 10) {
       s+="0";
     }
-    s+=round((millis()-startingTime)/1000/60) +":";
+    s+=floor((millis()-startingTime)/1000/60) +":";
     if ((millis()-startingTime)/1000%60 < 10) {
       s+="0";
     }
-    s+=round((millis()-startingTime)/1000%60);
+    s+=floor((millis()-startingTime)/1000%60);
     fill(0, 0, 1);
     text(s, 0, 36);
   }

@@ -47,11 +47,21 @@ class Enemy extends EntityLiving {
   void show() {
     pushMatrix();
     translate(x, y);
+    pushMatrix();        
     rotate(dir);
     image(im, 0, 0);
     popMatrix();
+    calculateHealth();
+    popMatrix();
   }
 
+  void calculateHealth(){
+    rectMode(CORNERS);
+    fill(33,1,1);
+    rect(-this.size/2,-this.size,(this.h/this.maxHealth) * this.size-this.size/2,-this.size+5);
+    fill(0,1,1);
+    rect((this.h/this.maxHealth)*this.size - this.size/2, -this.size,this.size/2,-this.size+5);
+  }
 
 
   

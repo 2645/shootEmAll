@@ -6,7 +6,7 @@ class WeaponSprayer extends Weapon {
   int speedMin;
   
   WeaponSprayer() {
-    super("Flamethrower", 30, 200);
+    super("Flamethrower", 30, 400);
     this.im = loadImage("DEV.png");
     this.bullet = new BulletSprayer(0,0,0,0,new Entity());
     this.spread = 0.09;

@@ -2,12 +2,14 @@ abstract class EntityLiving extends Entity {
 
   Weapon w;
   float h;
+  float maxHealth;
 
   EntityLiving(float x, float y, float speedFactor, Weapon w, float h, float size) {
     super(x, y, speedFactor, size);
     this.w =w;
     this.w.owner = this;
     this.h = h;
+    this.maxHealth = h;
   }
 
   void fire() {
