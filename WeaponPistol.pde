@@ -1,7 +1,7 @@
 class WeaponPistol extends Weapon {
   WeaponPistol() {
     super("pistol", 2, 100);
-    this.im = loadImage("pistol.png");
+    this.im = rm.get("pistol.png");
     this.bullet = new BulletPistol(0, 0, 0, new Entity());
   }
 

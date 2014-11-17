@@ -14,7 +14,7 @@ class Player extends EntityLiving {
     this.healthTimer = millis();
     this.maxHealth = 100;
     this.w.owner = this;
-    this.im = loadImage("player.png");
+    this.im = rm.get("player.png");
   }
 
   void show() {

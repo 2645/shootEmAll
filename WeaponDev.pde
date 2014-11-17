@@ -1,7 +1,7 @@
 class WeaponDev extends Weapon {
   WeaponDev() {
     super("DEV", 20, 1000);
-    this.im = loadImage("DEV.png");
+    this.im = rm.get("DEV.png");
     this.bullet = new BulletDev(0,0,0,new Entity());
   }
 

@@ -4,7 +4,7 @@ class EnemySniper extends Enemy {
     this.ammoDropChance = 0.7;
     this.healthPackDropChance  = 0.7;
     this.weaponDropChance = 0.01;
-    this.im = loadImage("EnemySniper.png");    
+    this.im = rm.get("EnemySniper.png");    
   }
 }
 

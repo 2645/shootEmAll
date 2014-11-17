@@ -1,7 +1,7 @@
 class WeaponSmg extends Weapon {
   WeaponSmg() {
     super("smg", 5, 300);
-    this.im = loadImage("smg.png");
+    this.im = rm.get("smg.png");
     this.bullet = new BulletSmg(0.0, 0.0, 0.0, new Entity());
   }
   void fire(EntityLiving e) {

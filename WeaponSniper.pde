@@ -1,7 +1,7 @@
 class WeaponSniper extends Weapon {
   WeaponSniper() {
     super("sniper", 0.5, 80);
-    this.im = loadImage("sniper.png");
+    this.im = rm.get("sniper.png");
     this.bullet = new BulletSniper(0, 0, 0, new Entity());
   }
   void fire() {

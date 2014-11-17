@@ -4,7 +4,7 @@ class EnemyRegular extends Enemy {
     this.ammoDropChance = 0.7;
     this.healthPackDropChance  = 0.7;
     this.weaponDropChance = 0.01;
-    this.im = loadImage("EnemyPistol.png");
+    this.im = rm.get("EnemyPistol.png");
   }
 }
 

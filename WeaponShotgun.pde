@@ -7,7 +7,7 @@ class WeaponShotgun extends Weapon {
   
   WeaponShotgun() {
     super("Shotgun", 2, 20);
-    this.im = loadImage("DEV.png");
+    this.im = rm.get("shotgun.png");
     this.bullet = new BulletShotgun(0,0,0,0,new Entity());
     this.spread = 0.08;
     this.speedMax = 80;
