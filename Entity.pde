@@ -37,8 +37,27 @@ class Entity {
   }
 
   void updatePos() {
-    float x = this.x + this.xS*(millis()-this.time)/100;    
-    float y = this.y + this.yS*(millis()-this.time)/100;
+    float x = this.xS*(millis()-this.time)/100;    
+    float y = this.yS*(millis()-this.time)/100;
+    int maxX = ceil(x);
+    int maxY = ceil(y);
+    if(maxY == 0 && maxX == 0){
+     this.time = millis();
+     return; 
+    }
+    float absX = round(this.x + 1000);
+    float absY = round(this.y + 1000);
+    float newX = max(min(absX + maxX, 2000), 0);
+    float newY = max(min(absY + maxY, 2000), 0);
+    
+    if(g.map.pixels[floor(newY*2000 + newX)] != 16777215){
+      this.time = millis();
+      return;
+    }
+    
+    x = this.x + x;
+    y = this.y + y;
+    
     if (validPos(x)) {
       this.x = x;
     } 
