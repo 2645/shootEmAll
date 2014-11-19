@@ -90,6 +90,7 @@ class Game {
   }
   
   void spawnEnemy(){
+    if(true) return;
   float type = random(0,10);
   if(type<8){
     entities.add(new EnemyRegular(minCoord,maxCoord));

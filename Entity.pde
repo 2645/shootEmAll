@@ -36,8 +36,39 @@ class Entity {
     this.size = size;
   }
 
+  boolean _checkCollision(int x,int y,int halfSize, int fullSize){
+    if (g.map.pixels[y*2000 + x] != 16777215) {
+      return true;
+    }
+    int bottomY = y - halfSize;
+    int topY = y + halfSize;
+    int leftX = x - halfSize;
+    int rightX = x + halfSize;
+    for(int j = 0; j < fullSize; j++){
+      if (g.map.pixels[topY*2000 + leftX + j] != 16777215) {
+        return true;
+      }
+    }
+    for(int j = 0; j < fullSize; j++){
+      if (g.map.pixels[bottomY*2000 + leftX + j] != 16777215) {
+        return true;
+      }
+    }
+    for(int j = 0; j < fullSize; j++){
+      if (g.map.pixels[(bottomY + j)*2000 + leftX] != 16777215) {
+        return true;
+      }
+    }
+    for(int j = 0; j < fullSize; j++){
+      if (g.map.pixels[(bottomY + j)*2000 + rightX] != 16777215) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void updatePos() {
-    try {
+//    try {
       float x = this.xS*(millis()-this.time)/100;    
       float y = this.yS*(millis()-this.time)/100;
       int maxX = x>0?ceil(x):floor(x);
@@ -53,30 +84,52 @@ class Entity {
       int xD = maxX < 0 ? -1 : 1;
       int absMaxX = abs(maxX);
       int absMaxY = abs(maxY);
+      int xPenalty = 0;
+      int yPenalty = 0;
+      int halfSize = ceil(this.size/2);
+      int fullSize = halfSize + halfSize;
       if (absMaxY > absMaxX) {
         float diff = absMaxX / absMaxY;
         for (int i = 1; i < absMaxY; i++) {
-          int newX = max(min(absX + round((i*xD) * diff), 1999), 0);
-          int newY = max(min(absY + (i*yD), 1999), 0);
-          if (g.map.pixels[newY*2000 + newX] != 16777215) {
-            x = 0;
-            y = 0;
+          int newX = max(min(absX + round(((i - xPenalty)*xD) * diff), 1999), 0);
+          int newY = max(min(absY + ((i - yPenalty)*yD), 1999), 0);
+          if(this._checkCollision(newX, newY, halfSize, fullSize)){
             this.wallCol();
             didWallCol = true;
-            break;
+            int penaltiedNewX = max(min(absX + round((((i - xPenalty) - 1)*xD) * diff), 1999), 0);
+            if(this._checkCollision(penaltiedNewX, newY, halfSize, fullSize)){
+              int penaltiedNewY = max(min(absY + (((i - yPenalty) - 1)*yD), 1999), 0);
+              if(this._checkCollision(newX, penaltiedNewY, halfSize, fullSize)){
+                x = 0;
+                y = 0;
+              }else{
+                yPenalty++;
+              }
+            }else{
+              xPenalty++;
+            }
           }
         }
       } else {
         float diff = absMaxY / absMaxX;
         for (int i = 1; i < absMaxX; i++) {
-          int newX = max(min(absX + (i*xD), 1999), 0);
-          int newY = max(min(absY + round((i*yD) * diff), 1999), 0);
-          if (g.map.pixels[newY*2000 + newX] != 16777215) {
-            x = 0;
-            y = 0;
+          int newX = max(min(absX + ((i - xPenalty)*xD), 1999), 0);
+          int newY = max(min(absY + round(((i - yPenalty)*yD) * diff), 1999), 0);
+          if(this._checkCollision(newX, newY, halfSize, fullSize)){
             this.wallCol();
             didWallCol = true;
-            break;
+            int penaltiedNewX = max(min(absX + (((i - xPenalty) - 1)*xD), 1999), 0);
+            if(this._checkCollision(penaltiedNewX, newY, halfSize, fullSize)){
+              int penaltiedNewY = max(min(absY + round((((i - yPenalty) - 1)*yD) * diff), 1999), 0);
+              if(this._checkCollision(newX, penaltiedNewY, halfSize, fullSize)){
+                x = 0;
+                y = 0;
+              }else{
+                yPenalty++; 
+              }
+            }else{
+              xPenalty++;
+            }
           }
         }
       }
@@ -100,14 +153,26 @@ class Entity {
         this.y = y;
       } 
       this.time = millis();
-    }
-    catch (Exception e) {
-      println(e);
-    }
+//    }
+//    catch (Exception e) {
+//     println(e);
+//    }
   }
 
   void update() {
     updatePos();
+  }
+  
+  void remove(){
+     if(g.entities.contains(this)){
+       g.entities.remove(this);
+     }
+  }
+  
+  void add(){
+    if(!g.entities.contains(this)){
+      g.entities.add(this);
+    }
   }
 
   void show() {
@@ -168,7 +233,7 @@ class Entity {
   }
 
   void wallCol() {
-    println(this +" is eductively touchin\' that wall");
+     //println(this +" is eductively touchin\' that wall");
   }
 
   void fire() {

@@ -22,12 +22,12 @@ class Bullet extends Entity {
 
   void borderCol() {    
     if (this.x+this.size> g.maxCoord || this.x-this.size< g.minCoord || this.y+this.size > g.maxCoord || this.y-this.size < g.minCoord) {
-      g.entities.remove(g.entities.indexOf(this));
+      this.remove();
     }
   }
   
   void wallCol(){    
-    g.entities.remove(g.entities.indexOf(this));          
+    this.remove();          
   }
 }
 

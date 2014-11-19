@@ -76,6 +76,7 @@ void keyPressed() {
     this.g = new Game();
     this.s = new Screen(this.g);
     s.state = 1;
+    loop();
   }
   if (input) {
     if (key == 'W' || key == 'w') {
@@ -106,7 +107,6 @@ void mouseReleased() {
   s.g.p.w.triggered = false;
 }
 
-void mousePressed() {
+void mousePressed(){
   s.g.p.w.triggered = true;
 }
-
