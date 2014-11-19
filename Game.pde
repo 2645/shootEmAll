@@ -10,12 +10,12 @@ class Game {
   Game() {
     this.minCoord = -1000;
     this.maxCoord = 1000;
-    this.p = new Player(500, 500, 20, new WeaponFlamethrower    (), 100, 40);
+    this.p = new Player(500, 500, 20, new WeaponDev(), 100, 40);
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;
     this.level = 0;    
-    this.map = loadImage("MAP.png");
+    this.map = rm.get("MAP.png");
     map.loadPixels();
   }
   boolean first = true;
@@ -38,7 +38,6 @@ class Game {
       noLoop();
     }
 
-    //spawnEnemies();
     pushMatrix();// update player;
     translate(width/2, height/2);
     p.update();
@@ -70,7 +69,7 @@ class Game {
       line(i, minCoord, i, maxCoord);
       line(minCoord, i, maxCoord, i);
     }
-    image(map,0,0);
+    image(map, 0, 0);
   }
 
   boolean lvlCompleted() {
@@ -85,13 +84,18 @@ class Game {
   void spawnEnemies() {
     int amount = round(random(10+level*3, 20+level*5));
     for (int i = 0; i <  amount; i++) {
-      Enemy e = new EnemyRegular(minCoord, maxCoord);
-      entities.add(new EnemyRegular(minCoord, maxCoord));
-      if (i<amount/5) {
-        entities.add(new EnemySniper(minCoord, maxCoord));
-      }
+      spawnEnemy();
     }         
     time = millis();
+  }
+  
+  void spawnEnemy(){
+  float type = random(0,10);
+  if(type<8){
+    entities.add(new EnemyRegular(minCoord,maxCoord));
+  }else{
+    entities.add(new EnemySniper(minCoord,maxCoord));
+  }
   }
 
   void updatePlayer() {

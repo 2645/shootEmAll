@@ -168,7 +168,7 @@ class Entity {
   }
 
   void wallCol() {
-    println("Seductively tocuhin\' that wall");
+    println(this +" is eductively touchin\' that wall");
   }
 
   void fire() {

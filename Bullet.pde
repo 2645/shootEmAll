@@ -7,8 +7,8 @@ class Bullet extends Entity {
     super(x, y, s, dir, size);
     this.e = e;
     this.damage = damage;
-    this.x +=e.size/2*cos(this.dir);
-    this.y +=e.size/2*sin(this.dir);
+    this.x +=(e.size/2+5)*cos(this.dir);
+    this.y +=(e.size/2+5)*sin(this.dir);
   }
 
   void show() {
@@ -21,7 +21,7 @@ class Bullet extends Entity {
   }
 
   void borderCol() {    
-    if (this.x+this.size/2> g.maxCoord || this.x-this.size/2< g.minCoord || this.y+this.size/2 > g.maxCoord || this.y-this.size/2 < g.minCoord) {
+    if (this.x+this.size> g.maxCoord || this.x-this.size< g.minCoord || this.y+this.size > g.maxCoord || this.y-this.size < g.minCoord) {
       g.entities.remove(g.entities.indexOf(this));
     }
   }
