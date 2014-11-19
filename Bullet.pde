@@ -7,6 +7,8 @@ class Bullet extends Entity {
     super(x, y, s, dir, size);
     this.e = e;
     this.damage = damage;
+    this.x +=e.size/2*cos(this.dir);
+    this.y +=e.size/2*sin(this.dir);
   }
 
   void show() {

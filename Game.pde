@@ -10,7 +10,7 @@ class Game {
   Game() {
     this.minCoord = -1000;
     this.maxCoord = 1000;
-    this.p = new Player(500, 500, 20, new WeaponMagic(), 100, 40);
+    this.p = new Player(500, 500, 20, new WeaponFlamethrower    (), 100, 40);
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;
@@ -84,11 +84,11 @@ class Game {
 
   void spawnEnemies() {
     int amount = round(random(10+level*3, 20+level*5));
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i <  amount; i++) {
       Enemy e = new EnemyRegular(minCoord, maxCoord);
       entities.add(new EnemyRegular(minCoord, maxCoord));
       if (i<amount/5) {
-        //entities.add(new EnemySniper(minCoord, maxCoord));
+        entities.add(new EnemySniper(minCoord, maxCoord));
       }
     }         
     time = millis();

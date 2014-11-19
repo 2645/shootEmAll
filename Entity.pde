@@ -37,75 +37,79 @@ class Entity {
   }
 
   void updatePos() {
-    float x = this.xS*(millis()-this.time)/100;    
-    float y = this.yS*(millis()-this.time)/100;
-    int maxX = x>0?ceil(x):floor(x);
-    int maxY = y>0?ceil(y):floor(y);
-    boolean didWallCol = false;
-    if(maxY == 0 && maxX == 0){
-     this.time = millis();
-     return; 
-    }
-    int absX = round(this.x + 1000);
-    int absY = round(this.y + 1000);
-    int yD = maxY < 0 ? -1 : 1;
-    int xD = maxX < 0 ? -1 : 1;
-    int absMaxX = abs(maxX);
-    int absMaxY = abs(maxY);
-    if(absMaxY > absMaxX){
-       float diff = absMaxX / absMaxY;
-       for(int i = 1; i < absMaxY; i++){
-         int newX = max(min(absX + round((i*xD) * diff), 2000),0);
-         int newY = max(min(absY + (i*yD), 2000),0);
-         if(g.map.pixels[newY*2000 + newX] != 16777215){
-           x = 0;
-           y = 0;
-           this.wallCol();
-           didWallCol = true;
-           break; 
-         }
-       }
-    }else{
-      float diff = absMaxY / absMaxX;
-      for(int i = 1; i < absMaxX; i++){
-         int newX = max(min(absX + (i*xD), 2000),0);
-         int newY = max(min(absY + round((i*yD) * diff), 2000),0);
-         if(g.map.pixels[newY*2000 + newX] != 16777215){
-           x = 0;
-           y = 0;
-           this.wallCol();
-           didWallCol = true;
-           break;
-         }
+    try {
+      float x = this.xS*(millis()-this.time)/100;    
+      float y = this.yS*(millis()-this.time)/100;
+      int maxX = x>0?ceil(x):floor(x);
+      int maxY = y>0?ceil(y):floor(y);
+      boolean didWallCol = false;
+      if (maxY == 0 && maxX == 0) {
+        this.time = millis();
+        return;
       }
-    }
-    
-    int newX = max(min(absX + round(x), 2000),0);
-    int newY = max(min(absY + round(y), 2000),0);
-    if(g.map.pixels[newY*2000 + newX] != 16777215){
-      if(!didWallCol){
-        this.wallCol(); 
+      int absX = round(this.x + 1000);
+      int absY = round(this.y + 1000);
+      int yD = maxY < 0 ? -1 : 1;
+      int xD = maxX < 0 ? -1 : 1;
+      int absMaxX = abs(maxX);
+      int absMaxY = abs(maxY);
+      if (absMaxY > absMaxX) {
+        float diff = absMaxX / absMaxY;
+        for (int i = 1; i < absMaxY; i++) {
+          int newX = max(min(absX + round((i*xD) * diff), 2000), 0);
+          int newY = max(min(absY + (i*yD), 2000), 0);
+          if (g.map.pixels[newY*2000 + newX] != 16777215) {
+            x = 0;
+            y = 0;
+            this.wallCol();
+            didWallCol = true;
+            break;
+          }
+        }
+      } else {
+        float diff = absMaxY / absMaxX;
+        for (int i = 1; i < absMaxX; i++) {
+          int newX = max(min(absX + (i*xD), 2000), 0);
+          int newY = max(min(absY + round((i*yD) * diff), 2000), 0);
+          if (g.map.pixels[newY*2000 + newX] != 16777215) {
+            x = 0;
+            y = 0;
+            this.wallCol();
+            didWallCol = true;
+            break;
+          }
+        }
       }
-      x = 0;
-      y = 0;
-      
+
+      int newX = max(min(absX + round(x), 2000), 0);
+      int newY = max(min(absY + round(y), 2000), 0);
+      if (g.map.pixels[newY*2000 + newX] != 16777215) {
+        if (!didWallCol) {
+          this.wallCol();
+        }
+        x = 0;
+        y = 0;
+      }
+
+      x = this.x + x;
+      y = this.y + y;
+      if (validPos(x)) {
+        this.x = x;
+      } 
+      if (validPos(y)) {   
+        this.y = y;
+      } 
+      this.time = millis();
     }
-    
-    x = this.x + x;
-    y = this.y + y;
-    if (validPos(x)) {
-      this.x = x;
-    } 
-    if (validPos(y)) {   
-      this.y = y;
-    } 
-    this.time = millis();
+    catch (Exception e) {
+      println(e);
+    }
   }
 
   void update() {
     updatePos();
   }
-  
+
   void show() {
     fill(63, 99, 1);
     rect(x, y, size, size);
@@ -162,11 +166,11 @@ class Entity {
       this.y = g.minCoord+1+this.size/2;
     }
   }
- 
-  void wallCol(){
+
+  void wallCol() {
     println("Seductively tocuhin\' that wall");
   }
-  
+
   void fire() {
   }
 
