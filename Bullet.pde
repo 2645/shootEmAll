@@ -21,7 +21,7 @@ class Bullet extends Entity {
   }
 
   void borderCol() {    
-    if (this.x+this.size/2>= g.maxCoord || this.x-this.size/2<= g.minCoord || this.y+this.size/2 >= g.maxCoord || this.y-this.size/2 <= g.minCoord) {
+    if (this.x+this.size/2> g.maxCoord || this.x-this.size/2< g.minCoord || this.y+this.size/2 > g.maxCoord || this.y-this.size/2 < g.minCoord) {
       g.entities.remove(g.entities.indexOf(this));
     }
   }

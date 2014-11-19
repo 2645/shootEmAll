@@ -56,8 +56,8 @@ class Entity {
       if (absMaxY > absMaxX) {
         float diff = absMaxX / absMaxY;
         for (int i = 1; i < absMaxY; i++) {
-          int newX = max(min(absX + round((i*xD) * diff), 2000), 0);
-          int newY = max(min(absY + (i*yD), 2000), 0);
+          int newX = max(min(absX + round((i*xD) * diff), 1999), 0);
+          int newY = max(min(absY + (i*yD), 1999), 0);
           if (g.map.pixels[newY*2000 + newX] != 16777215) {
             x = 0;
             y = 0;
@@ -69,8 +69,8 @@ class Entity {
       } else {
         float diff = absMaxY / absMaxX;
         for (int i = 1; i < absMaxX; i++) {
-          int newX = max(min(absX + (i*xD), 2000), 0);
-          int newY = max(min(absY + round((i*yD) * diff), 2000), 0);
+          int newX = max(min(absX + (i*xD), 1999), 0);
+          int newY = max(min(absY + round((i*yD) * diff), 1999), 0);
           if (g.map.pixels[newY*2000 + newX] != 16777215) {
             x = 0;
             y = 0;
@@ -81,8 +81,8 @@ class Entity {
         }
       }
 
-      int newX = max(min(absX + round(x), 2000), 0);
-      int newY = max(min(absY + round(y), 2000), 0);
+      int newX = max(min(absX + round(x), 1999), 0);
+      int newY = max(min(absY + round(y), 1999), 0);
       if (g.map.pixels[newY*2000 + newX] != 16777215) {
         if (!didWallCol) {
           this.wallCol();
