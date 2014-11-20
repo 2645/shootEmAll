@@ -11,6 +11,7 @@ class ResourceManager {
        return cache.get(path);
     }
     PImage file = loadImage(path);
+    file.loadPixels();
     cache.put(path, file);
     return file;
   }

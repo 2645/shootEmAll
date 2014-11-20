@@ -17,7 +17,6 @@ class Entity {
     if ( this.defaultBump == null) {
       this.defaultBump = rm.get("defaultBumpMap.png");
     }
-    this.defaultBump.loadPixels();
   }
 
   Entity(float x, float y, float speedFactor, float size) {
@@ -33,11 +32,9 @@ class Entity {
     if (this.im == null) {
       this.im = rm.get("default.png");
     }
-    this.im.loadPixels();
     if ( this.defaultBump == null) {
       this.defaultBump = rm.get("defaultBumpMap.png");
-    }
-    this.defaultBump.loadPixels();
+    }    
   }
 
   Entity(float x, float y, float s, float dir, float size) {
@@ -52,11 +49,10 @@ class Entity {
     if (this.im == null) {
       this.im = rm.get("default.png");
     }
-    this.im.loadPixels();
     if ( this.defaultBump == null) {
       this.defaultBump = rm.get("defaultBumpMap.png");
     }
-    this.defaultBump.loadPixels();
+
   }
 
   void updatePos() {
@@ -65,14 +61,18 @@ class Entity {
     int absX =ceil(max(min(1999-this.size/2, ceil(x+1000)), this.size/2));
     int absY =ceil(max(min(1999-this.size/2, ceil(y+1000)), this.size/2));
     boolean noCol = true;
+    int dist = 0;
+    while(noCol && dist  < 100){
     for (int i = 0; i<this.size; i++) {
       for (int j = 0; j<this.size; j++) {         
         if (this.defaultBump.pixels[round(j*this.size+i)] != 16777215 && g.map.pixels[round((absY-this.size/2+j)*2000+absX-this.size/2+i)] != 16777215) {
-          println("collision found at " + millis());
           noCol = false;
+          this.wallCol();
         }
       }
     }
+    dist++;  
+  }
 
 
 
@@ -135,11 +135,8 @@ class Entity {
       if (validPos(y)) {   
         this.y = y;
       }
-    } else {
-      if (this instanceof Bullet) {
-        g.entities.remove(this);
-      }
-    }
+    } 
+    
     this.time = millis();
   }
 
@@ -205,7 +202,7 @@ class Entity {
   }
 
   void wallCol() {
-    println(this +" is eductively touchin\' that wall");
+    //println(this +" is eductively touchin\' that wall");
   }
 
   void fire() {
@@ -216,6 +213,10 @@ class Entity {
       return true;
     }
     return false;
+  }
+  
+  void remove(){
+    g.entities.remove(this);
   }
 }
 
