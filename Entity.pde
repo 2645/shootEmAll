@@ -8,9 +8,16 @@ class Entity {
   float firstTime;
   float size;
   boolean isDead;
-  PImage im;
+  PImage im, defaultBump;
 
   Entity() {
+    if (this.im == null) {
+      this.im = rm.get("default.png");
+    }
+    if ( this.defaultBump == null) {
+      this.defaultBump = rm.get("defaultBumpMap.png");
+    }
+    this.defaultBump.loadPixels();
   }
 
   Entity(float x, float y, float speedFactor, float size) {
@@ -23,6 +30,14 @@ class Entity {
     this.time = millis();
     this.firstTime = millis();
     this.size = size;
+    if (this.im == null) {
+      this.im = rm.get("default.png");
+    }
+    this.im.loadPixels();
+    if ( this.defaultBump == null) {
+      this.defaultBump = rm.get("defaultBumpMap.png");
+    }
+    this.defaultBump.loadPixels();
   }
 
   Entity(float x, float y, float s, float dir, float size) {
@@ -34,76 +49,98 @@ class Entity {
     this.time = millis();
     this.firstTime = millis();
     this.size = size;
+    if (this.im == null) {
+      this.im = rm.get("default.png");
+    }
+    this.im.loadPixels();
+    if ( this.defaultBump == null) {
+      this.defaultBump = rm.get("defaultBumpMap.png");
+    }
+    this.defaultBump.loadPixels();
   }
 
   void updatePos() {
-    try {
-      float x = this.xS*(millis()-this.time)/100;    
-      float y = this.yS*(millis()-this.time)/100;
-      int maxX = x>0?ceil(x):floor(x);
-      int maxY = y>0?ceil(y):floor(y);
-      boolean didWallCol = false;
-      if (maxY == 0 && maxX == 0) {
-        this.time = millis();
-        return;
-      }
-      int absX = round(this.x + 1000);
-      int absY = round(this.y + 1000);
-      int yD = maxY < 0 ? -1 : 1;
-      int xD = maxX < 0 ? -1 : 1;
-      int absMaxX = abs(maxX);
-      int absMaxY = abs(maxY);
-      if (absMaxY > absMaxX) {
-        float diff = absMaxX / absMaxY;
-        for (int i = 1; i < absMaxY; i++) {
-          int newX = max(min(absX + round((i*xD) * diff), 1999), 0);
-          int newY = max(min(absY + (i*yD), 1999), 0);
-          if (g.map.pixels[newY*2000 + newX] != 16777215) {
-            x = 0;
-            y = 0;
-            this.wallCol();
-            didWallCol = true;
-            break;
-          }
-        }
-      } else {
-        float diff = absMaxY / absMaxX;
-        for (int i = 1; i < absMaxX; i++) {
-          int newX = max(min(absX + (i*xD), 1999), 0);
-          int newY = max(min(absY + round((i*yD) * diff), 1999), 0);
-          if (g.map.pixels[newY*2000 + newX] != 16777215) {
-            x = 0;
-            y = 0;
-            this.wallCol();
-            didWallCol = true;
-            break;
-          }
+    float x = this.x+this.xS*(millis()-this.time)/100;    
+    float y = this.y+this.yS*(millis()-this.time)/100;
+    int absX =ceil(max(min(1999-this.size/2, ceil(x+1000)), this.size/2));
+    int absY =ceil(max(min(1999-this.size/2, ceil(y+1000)), this.size/2));
+    boolean noCol = true;
+    for (int i = 0; i<this.size; i++) {
+      for (int j = 0; j<this.size; j++) {         
+        if (this.defaultBump.pixels[round(j*this.size+i)] != 16777215 && g.map.pixels[round((absY-this.size/2+j)*2000+absX-this.size/2+i)] != 16777215) {
+          println("collision found at " + millis());
+          noCol = false;
         }
       }
+    }
 
-      int newX = max(min(absX + round(x), 1999), 0);
-      int newY = max(min(absY + round(y), 1999), 0);
-      if (g.map.pixels[newY*2000 + newX] != 16777215) {
-        if (!didWallCol) {
-          this.wallCol();
-        }
-        x = 0;
-        y = 0;
-      }
 
-      x = this.x + x;
-      y = this.y + y;
+
+    /**int maxX = x>0?ceil(x):floor(x);
+     int maxY = y>0?ceil(y):floor(y);
+     boolean didWallCol = false;
+     if (maxY == 0 && maxX == 0) {
+     this.time = millis();
+     return;
+     }
+     int absX = round(this.x + 1000);
+     int absY = round(this.y + 1000);
+     int yD = maxY < 0 ? -1 : 1;
+     int xD = maxX < 0 ? -1 : 1;
+     int absMaxX = abs(maxX);
+     int absMaxY = abs(maxY);
+     if (absMaxY > absMaxX) {
+     float diff = absMaxX / absMaxY;
+     for (int i = 1; i < absMaxY; i++) {
+     int newX = max(min(absX + round((i*xD) * diff), 1999), 0);
+     int newY = max(min(absY + (i*yD), 1999), 0);
+     if (g.map.pixels[newY*2000 + newX] != 16777215) {
+     x = 0;
+     y = 0;
+     this.wallCol();
+     didWallCol = true;
+     break;
+     }
+     }
+     } else {
+     float diff = absMaxY / absMaxX;
+     for (int i = 1; i < absMaxX; i++) {
+     int newX = max(min(absX + (i*xD), 1999), 0);
+     int newY = max(min(absY + round((i*yD) * diff), 1999), 0);
+     if (g.map.pixels[newY*2000 + newX] != 16777215) {
+     x = 0;
+     y = 0;
+     this.wallCol();
+     didWallCol = true;
+     break;
+     }
+     }
+     }
+     
+     int newX = max(min(absX + round(x), 1999), 0);
+     int newY = max(min(absY + round(y), 1999), 0);
+     if (g.map.pixels[newY*2000 + newX] != 16777215) {
+     if (!didWallCol) {
+     this.wallCol();
+     }
+     x = 0;
+     y = 0;
+     }
+     **/
+
+    if (noCol) {
       if (validPos(x)) {
         this.x = x;
       } 
       if (validPos(y)) {   
         this.y = y;
-      } 
-      this.time = millis();
+      }
+    } else {
+      if (this instanceof Bullet) {
+        g.entities.remove(this);
+      }
     }
-    catch (Exception e) {
-      println(e);
-    }
+    this.time = millis();
   }
 
   void update() {

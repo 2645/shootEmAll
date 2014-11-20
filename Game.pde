@@ -84,7 +84,7 @@ class Game {
   void spawnEnemies() {
     int amount = round(random(10+level*3, 20+level*5));
     for (int i = 0; i <  amount; i++) {
-      spawnEnemy();
+      //spawnEnemy();
     }         
     time = millis();
   }
