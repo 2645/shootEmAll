@@ -107,7 +107,6 @@ void mouseReleased() {
   s.g.p.w.triggered = false;
 }
 
-void mousePressed() {
+void mousePressed(){
   s.g.p.w.triggered = true;
 }
-
