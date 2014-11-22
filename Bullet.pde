@@ -25,9 +25,5 @@ class Bullet extends Entity {
       this.remove();
     }
   }
-  
-  void wallCol(){    
-    this.remove();          
-  }
 }
 

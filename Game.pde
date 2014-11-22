@@ -5,7 +5,6 @@ class Game {
   Player p;
   ArrayList<Entity> entities;
   float time, level, breakTime;
-  PImage map;
 
   Game() {
     this.minCoord = -1000;
@@ -15,7 +14,6 @@ class Game {
     this.time = millis();
     this.breakTime=0;
     this.level = 0;    
-    this.map = rm.get("MAP.png");
   }
   boolean first = true;
 
@@ -68,7 +66,7 @@ class Game {
       line(i, minCoord, i, maxCoord);
       line(minCoord, i, maxCoord, i);
     }
-    image(map, 0, 0);
+    
   }
 
   boolean lvlCompleted() {
