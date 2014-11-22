@@ -55,85 +55,73 @@ class Entity {
   }
 
   void updatePos() {
-    float x = this.x+this.xS*(millis()-this.time)/100;    
-    float y = this.y+this.yS*(millis()-this.time)/100;
-    int absX =ceil(max(min(1999-this.size/2, ceil(x+1000)), this.size/2));
-    int absY =ceil(max(min(1999-this.size/2, ceil(y+1000)), this.size/2));
-    boolean noCol = true;
+    // BASED ON EATERS COLLISION DETECTION
+    
+    boolean collided = false;
+    
+    // CALCULATE DISTANCE IT HAS TO TRAVEL AT MAX
+    float xDist = this.xS*(millis()-this.time)/100;    
+    float yDist = this.yS*(millis()-this.time)/100;
+    float absXDist = abs(xDist);
+    float absYDist = abs(yDist);
+    
+    // CALCULATE ABSOLUTE COORDS OF ENTITY (0 - 1999)
+    float absX = ceil(max(min(1999-this.size/2, ceil(this.x+1000)), this.size/2));
+    float absY = ceil(max(min(1999-this.size/2, ceil(this.y+1000)), this.size/2));
+    float xFactor, yFactor;
+    if (xDist == 0 && yDist == 0 ) {
+      return;
+    }
+    
+    // CALCULATE GROWTH FACTOR OF X AND Y
+    if (absXDist > absYDist) {
+      xFactor = 1;
+      yFactor = absYDist/absXDist;
+    } else {
+      xFactor = absXDist/absYDist;
+      yFactor = 1;
+    }
+    
+    // CALCULATE DIRECTION OF X AND Y
+    int xDir = xDist > 0 ? 1 : -1;
+    int yDir = yDist > 0 ? 1 : -1;
 
-    for (int i = 0; i<this.size; i++) {
-      for (int j = 0; j<this.size; j++) {         
-        if (this.defaultBump.pixels[round(j*this.size+i)] != 16777215 && g.map.pixels[round((absY-this.size/2+j)*2000+absX-this.size/2+i)] != 16777215) {
-          noCol = false;
-          this.wallCol();
+    float newX, newY;
+    
+    // CHECK EVERY POSITION FROM START TO FINISH FOR COLLISION
+    for (int k = 1; k < max (absXDist, absYDist); k ++) {
+      
+      // ABSOLUTE POSITION OF ENTITY
+      newX = absX + k * xFactor * xDir;
+      newY = absY + k * yFactor * xDir;
+      
+      // ITERATE THROUGH BUMPMAP OF ENTITY AND PART OF BUMPMAP OF MAP
+      for (int i = 0; i<this.size; i++) {
+        for (int j = 0; j<this.size; j++) {
+          
+          // CALCULATE WHICH PIXEL ON THE MAP SHOULD BE CHECKED
+          int mapX = ceil(max(min(1999,newX-this.size/2+i),0));
+          int mapY = ceil(max(min(1999,newY-this.size/2+j),0));
+          
+          // IF BOTH ENTITYMAP AND MAPMAP AREN'T TRANSPARANT COLLIDE
+          if (this.defaultBump.pixels[round(j*this.size+i)] != 16777215 && g.map.pixels[mapY*2000+mapX] != 16777215) {
+            
+            // SET THE DISTANCE TRAVELED ONE STEP BACK (CURRENTLY NOT USED)
+            xDist = (k-1) * xFactor * xDir;
+            yDist = (k-1) * yFactor * yDir; 
+            
+            this.wallCol();
+            collided = true;
+            break;
+          }
         }
       }
     }
-
-
-
-
-    /**int maxX = x>0?ceil(x):floor(x);
-     int maxY = y>0?ceil(y):floor(y);
-     boolean didWallCol = false;
-     if (maxY == 0 && maxX == 0) {
-     this.time = millis();
-     return;
-     }
-     int absX = round(this.x + 1000);
-     int absY = round(this.y + 1000);
-     int yD = maxY < 0 ? -1 : 1;
-     int xD = maxX < 0 ? -1 : 1;
-     int absMaxX = abs(maxX);
-     int absMaxY = abs(maxY);
-     if (absMaxY > absMaxX) {
-     float diff = absMaxX / absMaxY;
-     for (int i = 1; i < absMaxY; i++) {
-     int newX = max(min(absX + round((i*xD) * diff), 1999), 0);
-     int newY = max(min(absY + (i*yD), 1999), 0);
-     if (g.map.pixels[newY*2000 + newX] != 16777215) {
-     x = 0;
-     y = 0;
-     this.wallCol();
-     didWallCol = true;
-     break;
-     }
-     }
-     } else {
-     float diff = absMaxY / absMaxX;
-     for (int i = 1; i < absMaxX; i++) {
-     int newX = max(min(absX + (i*xD), 1999), 0);
-     int newY = max(min(absY + round((i*yD) * diff), 1999), 0);
-     if (g.map.pixels[newY*2000 + newX] != 16777215) {
-     x = 0;
-     y = 0;
-     this.wallCol();
-     didWallCol = true;
-     break;
-     }
-     }
-     }
-     
-     int newX = max(min(absX + round(x), 1999), 0);
-     int newY = max(min(absY + round(y), 1999), 0);
-     if (g.map.pixels[newY*2000 + newX] != 16777215) {
-     if (!didWallCol) {
-     this.wallCol();
-     }
-     x = 0;
-     y = 0;
-     }
-     **/
-
-    if (noCol) {
-      if (validPos(x)) {
-        this.x = x;
-      } 
-      if (validPos(y)) {   
-        this.y = y;
-      }
-    } 
-
+    
+    if(!collided){
+    this.x += xDist;
+    this.y += yDist;
+    }
     this.time = millis();
   }
 
@@ -142,7 +130,7 @@ class Entity {
   }
 
   void show() {
-    fill(63, 99, 1);
+    fill(63, 99, 1); 
     rect(x, y, size, size);
   }
 
@@ -181,7 +169,7 @@ class Entity {
 
   void borderCol() {
     if (this instanceof Bullet) {
-      ((Bullet) this).borderCol();
+      ((Bullet) this).borderCol(); 
       return;
     }
     if (this.x+this.size/2>=g.maxCoord) {
