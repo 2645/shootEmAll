@@ -82,7 +82,7 @@ class Game {
       entities.add(new EntityPortalBoss());
     }
     for (int i = 0; i < level/5 ; i++ ){   
-      //entities.add(new EntityPortalRegular()); 
+      entities.add(new EntityPortalRegular()); 
     }
     time = millis();
   }

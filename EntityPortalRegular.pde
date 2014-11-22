@@ -2,7 +2,7 @@ class EntityPortalRegular extends EntityPortal {
 
   EntityPortalRegular() {
     super(random(g.minCoord+100,g.maxCoord-100), random(g.minCoord+100,g.maxCoord+100), 40);
-    this.spawnCounter = floor(1 + g.level);
+    this.spawnCounter = floor(1+g.level/2);
   }
 
   Enemy enemy() {
