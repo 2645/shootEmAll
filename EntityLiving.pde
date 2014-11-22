@@ -20,13 +20,13 @@ abstract class EntityLiving extends Entity {
     if (!e.e.equals(this) && this.collide(e)) {
       if (e.e instanceof Enemy && this instanceof Enemy) {
       } else {
-        g.entities.remove(e);
+        e.dead();
         this.h -= e.damage;
       }
       if (this.h<=0) {
         this.calculateDrop();
         this.isDead = true;
-        g.entities.remove(this);
+        dead();
       }
     }
   }

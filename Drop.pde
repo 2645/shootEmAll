@@ -11,7 +11,6 @@ abstract class Drop extends Entity {
   }  
   
   void entityCol(Player e){
-    println("entityCol in drop");
     if(this instanceof HealthPack){
       ((HealthPack) this).entityCol((Player ) e);
     }else if (this instanceof Ammo){

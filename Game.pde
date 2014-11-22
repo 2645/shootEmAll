@@ -9,11 +9,11 @@ class Game {
   Game() {
     this.minCoord = -1000;
     this.maxCoord = 1000;
-    this.p = new Player(500, 500, 20, new WeaponSniper(), 100, 40);
+    this.p = new Player(500, 500, 20, new WeaponDev(), 100, 40);
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;
-    this.level = 0;    
+    this.level = 0;
   }
   boolean first = true;
 
@@ -25,7 +25,7 @@ class Game {
       }
       if (millis()-breakTime>=5000) {
         level ++;
-        spawnEnemies();
+        spawnPortals();
         first =true;
       }
     }
@@ -66,34 +66,25 @@ class Game {
       line(i, minCoord, i, maxCoord);
       line(minCoord, i, maxCoord, i);
     }
-    
   }
 
   boolean lvlCompleted() {
     for (Entity e : entities) {
-      if (e instanceof Enemy) {
+      if (e instanceof EntityPortal || e instanceof Enemy) {
         return false;
       }
     }
     return true;
   }
 
-  void spawnEnemies() {
-    int amount = round(random(10+level*3, 20+level*5));
-    for (int i = 0; i <  0; i++) {
-      spawnEnemy();
-    }         
-    time = millis();
-  }
-
-  void spawnEnemy() {
-
-    float type = random(0, 10);
-    if (type<8) {
-      entities.add(new EnemyRegular(minCoord, maxCoord));
-    } else {
-      entities.add(new EnemySniper(minCoord, maxCoord));
+  void spawnPortals() {
+    if(level%5 == 0){
+      entities.add(new EntityPortalBoss());
     }
+    for (int i = 0; i < level/5 ; i++ ){   
+      //entities.add(new EntityPortalRegular()); 
+    }
+    time = millis();
   }
 
   void updatePlayer() {
@@ -103,7 +94,7 @@ class Game {
   }
 
   void updateEntities() {
-    ArrayList<Entity> entitiesCopy = (ArrayList) entities.clone();
+    ArrayList<Entity> entitiesCopy = (ArrayList) entities.clone(); 
     for (Entity e : entitiesCopy) {   
       // UPDATE ENTITIES     
       if (e instanceof EntityLiving) {
@@ -121,16 +112,16 @@ class Game {
       // UPDATE DROPS
       if ( e instanceof Drop) {
         if (((Drop)e).despawned()) {
-          entities.remove(e);
+          e.dead();
         }
       }
     }
   }
 
   void updateCollisions() {
-    ArrayList<Entity> entitiesCopy = (ArrayList) entities.clone();
+    ArrayList<Entity> entitiesCopy = (ArrayList) entities.clone(); 
     for (Entity e : entitiesCopy) {
-      e.borderCol();
+      e.borderCol(); 
       e.resolveCollision(p);
     }    
     for (int i = 0; i < entitiesCopy.size ()-1; i++) {

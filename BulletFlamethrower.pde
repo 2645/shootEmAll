@@ -11,7 +11,7 @@ class BulletFlamethrower extends Bullet {
   void update() {
     updatePos();
     if (this.time - this.firstTime > this.timeEnd) {
-      g.entities.remove(this);
+      dead();
     }
   }
   void show() {

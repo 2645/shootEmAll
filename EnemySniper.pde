@@ -1,6 +1,6 @@
 class EnemySniper extends Enemy {
-  EnemySniper(float minCoord, float maxCoord) {
-    super(random(minCoord, maxCoord), random(minCoord, maxCoord), 10, new WeaponSniper(), 20, 20,1200);
+  EnemySniper(float x, float y) {
+    super(x, y, 10, new WeaponSniper(), 20, 40,1200);
     this.ammoDropChance = 0.7;
     this.healthPackDropChance  = 0.7;
     this.weaponDropChance = 0.01;

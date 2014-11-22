@@ -19,7 +19,7 @@ class Ammo extends Drop {
         if (e.w.ammo> e.w.maxAmmo) {
           e.w.ammo = e.w.maxAmmo;
         }
-        g.entities.remove(this);
+        dead();
       }
     }
   }

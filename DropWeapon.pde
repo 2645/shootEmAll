@@ -25,7 +25,7 @@ class DropWeapon extends Drop {
         g.entities.add(new DropWeapon(e.x+random(-10, 10), e.y+random(-10, 10), e.dir, (Weapon ) (e.w.clone())));
         e.w = this.w;
         e.w.owner =e;
-        g.entities.remove(this);
+        dead();
       }
     }
   }

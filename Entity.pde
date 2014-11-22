@@ -74,12 +74,15 @@ class Entity {
     } else if (this instanceof Player && e instanceof Drop) {
       ((Drop) e).entityCol((Player) this);
     }
-    
+
     // COLLISIONS THAT ARE IGNORED
     else if (this instanceof Drop && e instanceof Drop) {
     } else if (this instanceof Drop && e instanceof Entity) {
     } else if (this instanceof Entity && e instanceof Drop) {
     } else if (this instanceof Bullet && e instanceof Bullet) {
+    } else if (this instanceof EntityPortal && e instanceof EntityPortal) {
+    } else if (this instanceof EntityPortal && e instanceof Entity) {
+    } else if (this instanceof Entity && e instanceof EntityPortal) {
     } else {
       this.entityCol(e);
     }
@@ -125,7 +128,7 @@ class Entity {
     return false;
   }
 
-  void remove() {
+  void dead() {
     g.entities.remove(this);
   }
 }

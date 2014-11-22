@@ -14,7 +14,7 @@ class HealthPack extends Drop {
   void entityCol(Player e){
    if (this.collide(e)) {
       e.h += e.maxHealth/5;
-      g.entities.remove(this);
+     dead();
     }
   }
 }

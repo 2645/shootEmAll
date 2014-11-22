@@ -37,7 +37,7 @@ class Weapon {
     if (this.owner instanceof Player) {
       this.ammo -=1;
     }
-  g.entities.add(new Bullet(this.owner.x, this.owner.y, 1, this.owner.dir, this.owner, 100.0, 100.0));
+    g.entities.add(new Bullet(this.owner.x, this.owner.y, 1, this.owner.dir, this.owner, 100.0, 100.0));
   }
 
   Weapon clone() {
@@ -46,9 +46,9 @@ class Weapon {
       w =  new WeaponPistol();
     } else if (this instanceof WeaponSmg) {
       w = new WeaponSmg();
-    } else if (this instanceof WeaponSniper){
+    } else if (this instanceof WeaponSniper) {
       w = new WeaponSniper();
-    } else if (this instanceof WeaponDev){
+    } else if (this instanceof WeaponDev) {
       w = new WeaponDev();
     }
     w.ammo = this.ammo;
