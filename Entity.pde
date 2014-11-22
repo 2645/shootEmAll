@@ -34,7 +34,7 @@ class Entity {
     }
     if ( this.defaultBump == null) {
       this.defaultBump = rm.get("defaultBumpMap.png");
-    }    
+    }
   }
 
   Entity(float x, float y, float s, float dir, float size) {
@@ -52,7 +52,6 @@ class Entity {
     if ( this.defaultBump == null) {
       this.defaultBump = rm.get("defaultBumpMap.png");
     }
-
   }
 
   void updatePos() {
@@ -61,8 +60,7 @@ class Entity {
     int absX =ceil(max(min(1999-this.size/2, ceil(x+1000)), this.size/2));
     int absY =ceil(max(min(1999-this.size/2, ceil(y+1000)), this.size/2));
     boolean noCol = true;
-    int dist = 0;
-    while(noCol && dist  < 100){
+
     for (int i = 0; i<this.size; i++) {
       for (int j = 0; j<this.size; j++) {         
         if (this.defaultBump.pixels[round(j*this.size+i)] != 16777215 && g.map.pixels[round((absY-this.size/2+j)*2000+absX-this.size/2+i)] != 16777215) {
@@ -71,8 +69,7 @@ class Entity {
         }
       }
     }
-    dist++;  
-  }
+
 
 
 
@@ -136,7 +133,7 @@ class Entity {
         this.y = y;
       }
     } 
-    
+
     this.time = millis();
   }
 
@@ -214,8 +211,8 @@ class Entity {
     }
     return false;
   }
-  
-  void remove(){
+
+  void remove() {
     g.entities.remove(this);
   }
 }
