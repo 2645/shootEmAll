@@ -1,7 +1,8 @@
-class EntityPortal extends Entity {
+abstract class EntityPortal extends Entity {
 
   float time;
   int spawnCounter;
+  int spawnAmount;
   
   EntityPortal(float x, float y, float size) {
     super(x, y, 0, size);
@@ -10,12 +11,10 @@ class EntityPortal extends Entity {
 
   void spawn() {
     if (millis()-this.time>5000) {
-      println(this + " is spawning now!!" + millis());
-      for(int i = 0 ; i < 5 ; i++){
-        g.entities.add(enemy());
+      for(int i = 0 ; i < spawnAmount ; i++){
+        g.entities.add(this.enemy());
       }
-      this.time = millis();
-      
+      this.time = millis();      
       spawnCounter--;
     }
   }
@@ -39,9 +38,6 @@ class EntityPortal extends Entity {
     popMatrix();
   }
   
-  Enemy enemy(){
-    println("not implemented you dumb fuck");
-    return null;
-  }
+  abstract Enemy enemy();
 }
 

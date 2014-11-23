@@ -70,7 +70,6 @@ class Game {
 
   boolean lvlCompleted() {
     for (Entity e : entities) {
-      println(e);
       if (e instanceof EntityPortal || e instanceof Enemy) {
         return false;
       }
@@ -83,7 +82,7 @@ class Game {
       entities.add(new EntityPortalBoss());
     }
     for (int i = 0; i < level/5 ; i++ ){   
-      //entities.add(new EntityPortalRegular()); 
+      entities.add(new EntityPortalRegular()); 
     }
     time = millis();
   }

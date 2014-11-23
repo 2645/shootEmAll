@@ -49,10 +49,10 @@ abstract class EntityLiving extends Entity {
       } else {
         dir = atan((this.y-e.y)/(this.x-e.x));
       }
-      float colX = cos(dir)*this.size/2 + e.x;
-      float colY = sin(dir)*this.size/2 + e.y;
-      e.x =  colX + e.size/2*cos(dir);
-      e.y =  colY + e.size/2*sin(dir);
+      float colX = cos(dir)*this.size/4 + e.x;
+      float colY = sin(dir)*this.size/4 + e.y;
+      e.x =  colX + e.size/4*cos(dir);
+      e.y =  colY + e.size/4*sin(dir);
     }
   }
 
@@ -68,10 +68,6 @@ abstract class EntityLiving extends Entity {
         g.entities.add(new DropWeapon(this.x+random(-10, 10), this.y+random(-10, 10), this.dir, ((Enemy)this).w));
       }
     }
-  }
-  
-  void dead(){
-    g.entities.remove(this);
   }
 }
 
