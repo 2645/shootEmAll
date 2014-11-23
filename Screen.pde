@@ -37,6 +37,7 @@ class Screen {
     rectMode(CORNERS);
     time();
     level();
+    expLevel();
     itemInfo();
   } 
 
@@ -60,6 +61,16 @@ class Screen {
     text(s, 0, 72);
   }
 
+  void expLevel(){
+    String s = "expLevel : "+ g.p.lvl;
+    text(s,0,108);
+    float border = g.p.exp/g.p.expNeeded*100;
+    fill(33,0.7,1);
+    rect(0,144,border,164);
+    fill(0,0,1);
+    rect(border,144,101,164);
+  }
+  
   void restart() {
     this.g = new Game();
   }

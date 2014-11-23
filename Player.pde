@@ -6,6 +6,9 @@ class Player extends EntityLiving {
   float maxHealth;
   PImage im;
   boolean pickUp;
+  int lvl;
+  float exp;
+  float expNeeded;
   
   Player(float x, float y, float speedFactor, Weapon w, float h, float size) {
     super(x, y, speedFactor, w, h, size);
@@ -15,6 +18,9 @@ class Player extends EntityLiving {
     this.maxHealth = 100;
     this.w.owner = this;
     this.im = rm.get("player.png");
+    this.lvl = 1;
+    this.exp = 0;
+    this.expNeeded = 100;
   }
 
   void show() {
@@ -46,9 +52,24 @@ class Player extends EntityLiving {
     this.yS = y*speedFactor;
   }
   
+  void experience(float earned){
+    exp+=earned;
+    if(exp> expNeeded){
+      this.lvl++;
+      exp -= expNeeded;
+      expNeeded  *=1.1;
+      nextLvl = true;
+    }
+  }
+  
   boolean firstCountDown = true;
+  boolean nextLvl = false;
   
   void updateHealth(){
+    if(nextLvl){
+    this.maxHealth *= pow(1.1,this.lvl-1);
+    nextLvl = false;
+    }
     if(this.h > maxHealth&& (firstCountDown || (millis()-this.healthTimer>1000))){
       h--;
       this.healthTimer = millis();

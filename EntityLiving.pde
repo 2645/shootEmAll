@@ -27,6 +27,9 @@ abstract class EntityLiving extends Entity {
         this.calculateDrop();
         this.isDead = true;
         this.dead();
+        if(this instanceof Enemy && e.e instanceof Player){
+          ((Player) ((Bullet) e).e).experience(((Enemy)this).exp);
+        }
       }
     }
   }

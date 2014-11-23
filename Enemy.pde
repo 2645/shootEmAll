@@ -2,11 +2,12 @@ class Enemy extends EntityLiving {
 
   float range;
   float ammoDropChance, healthPackDropChance, weaponDropChance;
+  float exp;
 
-  Enemy(float x, float y, float speedFactor, Weapon w, float h, float size, float range) {
-    
-    super(x, y, speedFactor, w, h+g.level*5, size);
+  Enemy(float x, float y, float speedFactor, Weapon w, float h, float size, float range) {    
+    super(x, y, speedFactor, w, floor((h + min(g.level,5)*5)*pow(1.1,max(1,g.level-5))), size);
     this.range = range;
+    this.exp  = this.h*1.1/10;
   }
 
   void update(Player p) {
