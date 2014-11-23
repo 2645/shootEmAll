@@ -10,7 +10,7 @@ class EntityPortal extends Entity {
 
   void spawn() {
     if (millis()-this.time>5000) {
-      println("spawning now!!" + millis());
+      println(this + " is spawning now!!" + millis());
       for(int i = 0 ; i < 5 ; i++){
         g.entities.add(enemy());
       }

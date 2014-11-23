@@ -26,7 +26,7 @@ abstract class EntityLiving extends Entity {
       if (this.h<=0) {
         this.calculateDrop();
         this.isDead = true;
-        dead();
+        this.dead();
       }
     }
   }
@@ -68,6 +68,10 @@ abstract class EntityLiving extends Entity {
         g.entities.add(new DropWeapon(this.x+random(-10, 10), this.y+random(-10, 10), this.dir, ((Enemy)this).w));
       }
     }
+  }
+  
+  void dead(){
+    g.entities.remove(this);
   }
 }
 

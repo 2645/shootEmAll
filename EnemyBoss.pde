@@ -5,4 +5,8 @@ class EnemyBoss extends Enemy{
     this.ammoDropChance = 1;
     this.weaponDropChance = 1;
   }
+  
+  void dead(){
+    g.entities.remove(this);
+  }
 }
