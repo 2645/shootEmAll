@@ -67,7 +67,7 @@ class Player extends EntityLiving {
   
   void updateHealth(){
     if(nextLvl){
-    this.maxHealth *= pow(1.1,this.lvl-1);
+    this.maxHealth *= 1.1;
     nextLvl = false;
     }
     if(this.h > maxHealth&& (firstCountDown || (millis()-this.healthTimer>1000))){
@@ -75,10 +75,10 @@ class Player extends EntityLiving {
       this.healthTimer = millis();
       firstCountDown = false;
     }
-    if(h >200){
-      h = 200;
+    if(h >min(maxHealth*2,maxHealth+1000)){
+      h = min(maxHealth*2,maxHealth+1000);
     }
-    if(h == 100){
+    if(h == maxHealth){
       firstCountDown = true;
     }
   }
