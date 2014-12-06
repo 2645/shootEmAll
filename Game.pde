@@ -4,16 +4,17 @@ class Game {
   final int maxCoord;
   Player p;
   ArrayList<Entity> entities;
-  float time, level, breakTime;
+  float time, level, breakTime, startingTime;
 
   Game() {
     this.minCoord = -1000;
     this.maxCoord = 1000;
-    this.p = new Player(500, 500, 20, new WeaponDev(), 100, 40);
+    this.p = new Player(500, 500, 20, new WeaponFlamethrower(), 100, 40);
     this.entities = new ArrayList<Entity>();
     this.time = millis();
     this.breakTime=0;
     this.level = 0;
+    this.startingTime = millis();
   }
   boolean first = true;
 
@@ -78,11 +79,11 @@ class Game {
   }
 
   void spawnPortals() {
-    if(level%5 == 0){
+    if (level%5 == 0) {
       entities.add(new EntityPortalBoss());
     }
-    for (int i = 0; i < level/5 ; i++ ){   
-      entities.add(new EntityPortalRegular()); 
+    for (int i = 0; i < level/5; i++ ) {   
+      entities.add(new EntityPortalRegular());
     }
     time = millis();
   }
@@ -116,6 +117,50 @@ class Game {
         }
       }
     }
+  }
+
+  float right, left, up, down;
+
+  void controlPressed(int c) {
+    switch(c) {
+    case 1:
+      up = 1;
+      break;
+    case 2:
+      down = 1;
+      break;
+    case 3:
+      left = 1;
+      break;
+    case 4:
+      right = 1;
+      break;
+    case 5:
+      p.pickUp = true;
+      break;
+    }
+    p.updateSpeeds(right-left, down-up);
+  }
+
+  void controlReleased(int c) {
+    switch(c) {
+    case 1:
+      up = 0;
+      break;
+    case 2:
+      down = 0;
+      break;
+    case 3:
+      left = 0;
+      break;
+    case 4:
+      right = 0;
+      break;
+    case 5:
+      p.pickUp = false;
+      break;
+    }
+    p.updateSpeeds(right-left, down-up);
   }
 
   void updateCollisions() {

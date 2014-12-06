@@ -29,78 +29,11 @@ boolean sketchFullScreen() {
 float left, right, up, down;
 
 void keyReleased() {
-  if (key == CODED) {
-    if (keyCode == SHIFT) {
-      s.g.p.pickUp = false;
-    }
-  }
-  if (input) {
-    if (key == 'W' || key == 'w') {
-      up = 0;
-    } else if (key =='S' || key == 's') {
-      down = 0;
-    } else if (key == 'A' || key == 'a') {
-      left = 0;
-    } else if (key == 'D' || key == 'd') {
-      right = 0;
-    }
-  } else {
-    if (key == 'Z' || key == 'z') {
-      up = 0;
-    } else if (key =='S' || key == 's') {
-      down = 0;
-    } else if (key == 'Q' || key == 'q') {
-      left = 0;
-    } else if (key == 'D' || key == 'd') {
-      right = 0;
-    }
-  }
-
-  s.g.p.updateSpeeds(right-left, down-up);
+  s.controlReleased();
 }
 
 void keyPressed() {
-  if ((key == 'W' ||key == 'w') && s.state != 1) {
-    s.state = 1;
-    input = true;
-  } else if ((key == 'Z' || key == 'z') && s.state != 1) {
-    s.state = 1;
-    input = false;
-  }
-  if (key == CODED) {
-    if (keyCode == SHIFT) {
-      g.p.pickUp = true;
-    }
-  }
-  if (key == 'R' || key == 'r') {
-    this.g = new Game();
-    this.s = new Screen(this.g);
-    s.state = 1;
-    loop();
-  }
-  if (input) {
-    if (key == 'W' || key == 'w') {
-      up = 1;
-    } else if (key =='S' || key == 's') {
-      down = 1;
-    } else if (key == 'A' || key == 'a') {
-      left = 1;
-    } else if (key == 'D' || key == 'd') {
-      right = 1;
-    }
-  } else {
-    if (key == 'Z' || key == 'z') {
-      up = 1;
-    } else if (key =='S' || key == 's') {
-      down = 1;
-    } else if (key == 'Q' || key == 'q') {
-      left = 1;
-    } else if (key == 'D' || key == 'd') {
-      right = 1;
-    }
-  }
-
-  s.g.p.updateSpeeds(right-left, down-up);
+  s.controlPressed();
 }
 
 void mouseReleased() {

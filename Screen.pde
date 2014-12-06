@@ -5,10 +5,12 @@ class Screen {
   boolean first =true;
   float startingTime;
   int state;
+  Menu menuScreen;
   Screen(Game g) {
     this.g = g;
     this.startingTime = millis();
-    this.state = 0;
+    this.state = 1;
+    this.menuScreen = new Menu();
   }
 
   void update() {
@@ -23,10 +25,7 @@ class Screen {
   }
 
   void updateMainMenu() {
-    background(0, 0, 0);
-    textAlign(CENTER);
-    text("PLEASE PRESS THE UP KEY\n( Z OR W DEPENDING ON QWERTY OR AZERTY )",width/2,height/2);
-    textAlign(LEFT);
+    menuScreen.update();
   }
 
   void updateGame() {
@@ -43,14 +42,14 @@ class Screen {
 
   void time() {
     String s = "TIME : ";
-    if ((millis()-startingTime)/1000/60 < 10) {
+    if ((millis()-g.startingTime)/1000/60 < 10) {
       s+="0";
     }
-    s+=floor((millis()-startingTime)/1000/60) +":";
-    if ((millis()-startingTime)/1000%60 < 10) {
+    s+=floor((millis()-g.startingTime)/1000/60) +":";
+    if ((millis()-g.startingTime)/1000%60 < 10) {
       s+="0";
     }
-    s+=floor((millis()-startingTime)/1000%60);
+    s+=floor((millis()-g.startingTime)/1000%60);
     fill(0, 0, 1);
     text(s, 0, 36);
   }
@@ -61,16 +60,16 @@ class Screen {
     text(s, 0, 72);
   }
 
-  void expLevel(){
+  void expLevel() {
     String s = "expLevel : "+ g.p.lvl;
-    text(s,0,108);
+    text(s, 0, 108);
     float border = g.p.exp/g.p.expNeeded*100;
-    fill(33,0.7,1);
-    rect(0,144,border,164);
-    fill(0,0,1);
-    rect(border,144,101,164);
+    fill(33, 0.7, 1);
+    rect(0, 144, border, 164);
+    fill(0, 0, 1);
+    rect(border, 144, 101, 164);
   }
-  
+
   void restart() {
     this.g = new Game();
   }
@@ -85,6 +84,140 @@ class Screen {
     text("damage : "+getDamage(), 100+width/3, height-28);
     text("ammo : ", 100+2*width/3, height-64);
     text(getAmmo(), 100+2*width/3, height-28);
+  }
+
+  void controlPressed() {
+    if (key == 'R' || key == 'r') {
+      this.g = new Game();
+      s.state = 1;
+      loop();
+    }
+    switch(state) {
+    case 0:
+      menuScreen.controlPressed();
+      break;
+    case 1:
+      convertControlPressed();
+      break;
+    }
+    /**
+     if ((key == 'W' ||key == 'w') && s.state != 1) {
+     s.state = 1;
+     input = true;
+     } else if ((key == 'Z' || key == 'z') && s.state != 1) {
+     s.state = 1;
+     input = false;
+     }
+     if (key == CODED) {
+     if (keyCode == SHIFT) {
+     g.p.pickUp = true;
+     }
+     }
+     
+     if (input) {
+     if (key == 'W' || key == 'w') {
+     up = 1;
+     } else if (key =='S' || key == 's') {
+     down = 1;
+     } else if (key == 'A' || key == 'a') {
+     left = 1;
+     } else if (key == 'D' || key == 'd') {
+     right = 1;
+     }
+     } else {
+     if (key == 'Z' || key == 'z') {
+     up = 1;
+     } else if (key =='S' || key == 's') {
+     down = 1;
+     } else if (key == 'Q' || key == 'q') {
+     left = 1;
+     } else if (key == 'D' || key == 'd') {
+     right = 1;
+     }
+     }
+     
+     g.p.updateSpeeds(right-left, down-up);
+     **/
+  }
+
+  void controlReleased() {
+    switch(state) {
+    case 0:
+      menuScreen.controlReleased();
+      break;
+    case 1:
+      convertControlReleased();
+      break;
+    }
+    /**
+     if (key == CODED) {
+     if (keyCode == SHIFT) {
+     g.p.pickUp = false;
+     }
+     }
+     if (input) {
+     if (key == 'W' || key == 'w') {
+     up = 0;
+     } else if (key =='S' || key == 's') {
+     down = 0;
+     } else if (key == 'A' || key == 'a') {
+     left = 0;
+     } else if (key == 'D' || key == 'd') {
+     right = 0;
+     }
+     } else {
+     if (key == 'Z' || key == 'z') {
+     up = 0;
+     } else if (key =='S' || key == 's') {
+     down = 0;
+     } else if (key == 'Q' || key == 'q') {
+     left = 0;
+     } else if (key == 'D' || key == 'd') {
+     right = 0;
+     }
+     }
+     
+     g.p.updateSpeeds(right-left, down-up);
+     **/
+  }
+
+  void convertControlPressed() {   
+    g.controlPressed(convertControl());
+  }
+  void convertControlReleased() {
+    g.controlReleased(convertControl());
+  }
+  
+  boolean qwerty = false;
+  int convertControl() {
+    int control =100;
+    if (qwerty) {
+      if (key == 'W' || key == 'w') {
+        control = 1;
+      } else if (key =='S' || key == 's') {
+        control = 2;
+      } else if (key == 'A' || key == 'a') {
+        control = 3;
+      } else if (key == 'D' || key == 'd') {
+        control = 4;
+      }
+    } else {
+      if (key == 'Z' || key == 'z') {
+        control = 1;
+      } else if (key =='S' || key == 's') {
+        control = 2;
+      } else if (key == 'Q' || key == 'q') {
+        control = 3;
+      } else if (key == 'D' || key == 'd') {
+        control = 4;
+      }
+    }
+    if (key == CODED) {
+      if (keyCode == SHIFT) {
+        control = 5;
+      }
+    }
+    return control;
   }
 
   String getHealth() {
