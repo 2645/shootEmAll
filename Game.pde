@@ -162,6 +162,13 @@ class Game {
     }
     p.updateSpeeds(right-left, down-up);
   }
+  
+  void mousePress(){
+    p.w.triggered = true;
+  }
+  void mouseRelease(){
+    p.w.triggered = false;
+  }
 
   void updateCollisions() {
     ArrayList<Entity> entitiesCopy = (ArrayList) entities.clone(); 

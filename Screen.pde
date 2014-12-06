@@ -5,12 +5,54 @@ class Screen {
   boolean first =true;
   float startingTime;
   int state;
-  Menu menuScreen;
+  Menu mainMenu;
   Screen(Game g) {
     this.g = g;
     this.startingTime = millis();
-    this.state = 1;
-    this.menuScreen = new Menu();
+    this.state = 0;
+    this.mainMenu = new Menu(this);
+    checkConfig();
+  }
+
+  BufferedReader config;
+  PrintWriter output;
+  void checkConfig() {
+    if(fileExists()){
+      executeConfig();
+    }else{
+      createConfig();
+      checkConfig();
+    }
+  }
+  
+  void createConfig(){
+    println("creating config");
+    output = createWriter(dataPath("cfg/cfg.xxx"));
+    output.println("qwerty: \t" + 1);
+    output.flush();
+    output.close();
+  }
+  
+  void executeConfig(){
+    println("reading from config");
+    config = createReader(dataPath("cfg/cfg.xxx"));
+    String s = "";
+    try{
+      s = config.readLine();
+    } catch (IOException e){
+    }
+    String[] value  = split(s,TAB);
+    if(int(value[1]) == 1){
+      qwerty = true;
+    }else{
+      qwerty  = false;
+    }
+    
+  }
+  
+  boolean fileExists(){
+    File f = new File(dataPath("cfg/cfg.xxx"));
+    return f.exists();
   }
 
   void update() {
@@ -25,7 +67,7 @@ class Screen {
   }
 
   void updateMainMenu() {
-    menuScreen.update();
+    mainMenu.update();
   }
 
   void updateGame() {
@@ -94,91 +136,23 @@ class Screen {
     }
     switch(state) {
     case 0:
-      menuScreen.controlPressed();
+      mainMenu.controlPressed();
       break;
     case 1:
       convertControlPressed();
       break;
     }
-    /**
-     if ((key == 'W' ||key == 'w') && s.state != 1) {
-     s.state = 1;
-     input = true;
-     } else if ((key == 'Z' || key == 'z') && s.state != 1) {
-     s.state = 1;
-     input = false;
-     }
-     if (key == CODED) {
-     if (keyCode == SHIFT) {
-     g.p.pickUp = true;
-     }
-     }
-     
-     if (input) {
-     if (key == 'W' || key == 'w') {
-     up = 1;
-     } else if (key =='S' || key == 's') {
-     down = 1;
-     } else if (key == 'A' || key == 'a') {
-     left = 1;
-     } else if (key == 'D' || key == 'd') {
-     right = 1;
-     }
-     } else {
-     if (key == 'Z' || key == 'z') {
-     up = 1;
-     } else if (key =='S' || key == 's') {
-     down = 1;
-     } else if (key == 'Q' || key == 'q') {
-     left = 1;
-     } else if (key == 'D' || key == 'd') {
-     right = 1;
-     }
-     }
-     
-     g.p.updateSpeeds(right-left, down-up);
-     **/
   }
 
   void controlReleased() {
     switch(state) {
     case 0:
-      menuScreen.controlReleased();
+      mainMenu.controlReleased();
       break;
     case 1:
       convertControlReleased();
       break;
     }
-    /**
-     if (key == CODED) {
-     if (keyCode == SHIFT) {
-     g.p.pickUp = false;
-     }
-     }
-     if (input) {
-     if (key == 'W' || key == 'w') {
-     up = 0;
-     } else if (key =='S' || key == 's') {
-     down = 0;
-     } else if (key == 'A' || key == 'a') {
-     left = 0;
-     } else if (key == 'D' || key == 'd') {
-     right = 0;
-     }
-     } else {
-     if (key == 'Z' || key == 'z') {
-     up = 0;
-     } else if (key =='S' || key == 's') {
-     down = 0;
-     } else if (key == 'Q' || key == 'q') {
-     left = 0;
-     } else if (key == 'D' || key == 'd') {
-     right = 0;
-     }
-     }
-     
-     g.p.updateSpeeds(right-left, down-up);
-     **/
   }
 
   void convertControlPressed() {   
@@ -187,8 +161,27 @@ class Screen {
   void convertControlReleased() {
     g.controlReleased(convertControl());
   }
-  
-  boolean qwerty = false;
+  void mousePress() {
+    switch(state) {
+    case 0:
+      mainMenu.mouseClick();
+      break;
+    case 1:
+      g.mousePress();
+      break;
+    }
+  }
+  void mouseRelease() {
+    switch(state) {
+    case 0:
+      break;
+    case 1:
+      g.mouseRelease();
+      break;
+    }
+  }
+
+  boolean qwerty = true;
   int convertControl() {
     int control =100;
     if (qwerty) {

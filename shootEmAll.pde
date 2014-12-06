@@ -37,9 +37,10 @@ void keyPressed() {
 }
 
 void mouseReleased() {
-  s.g.p.w.triggered = false;
+  s.mouseRelease();
+  
 }
 
 void mousePressed(){
-  s.g.p.w.triggered = true;
+  s.mousePress();
 }
